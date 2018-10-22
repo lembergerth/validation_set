@@ -23,7 +23,7 @@
   <option name="-heap">10000M</option>
   <option name="-benchmark"/>
   <option name="-timelimit">900s</option>
-  <option name="-m64" />
+  <option name="-64" />
 
   <propertyfile>ReachSafety.prp</propertyfile>
 
