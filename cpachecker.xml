@@ -4,11 +4,21 @@
 
 <require cpuModel="Intel Xeon E3-1230 v5 @ 3.40 GHz" cpuCores="8"/>
 
-  <resultfiles>**.graphml</resultfiles>
+<!--<resultfiles>**.graphml</resultfiles>-->
+  <resultfiles>**residual_program.c</resultfiles>
 
-  <rundefinition name="predicateAnalysis">
-    <option name="-predicateAnalysis"/>
+  <rundefinition name="fullAnalysis">
+    <option name="-predicateAnalysis" />
   </rundefinition>
+
+  <rundefinition name="diffAnalysis">
+    <option name="-differentialPredicateAnalysis" />
+  </rundefinition>
+
+  <rundefinition name="diffProgram">
+    <option name="-differentialProgramGenerator"/>
+  </rundefinition>
+
 
   <option name="-heap">10000M</option>
   <option name="-benchmark"/>
@@ -17,10 +27,14 @@
 
   <propertyfile>ReachSafety.prp</propertyfile>
 
-  <tasks name="precommit">
-    <include>./precommit/*.i</include>
+  <tasks name="fixes">
+    <requiredfiles>${inputfile_path}/../precommit/${inputfile_name}</requiredfiles>
+    <option name="-setprop">differential.program=${inputfile_path}/../precommit/${inputfile_name}</option>
+    <include>postcommit/*.i</include>
   </tasks>
-  <tasks name="postcommit">
-    <include>./postcommit/*.i</include>
+  <tasks name="inverse-fixes">
+    <requiredfiles>${inputfile_path}/../postcommit/${inputfile_name}</requiredfiles>
+    <option name="-setprop">differential.program=${inputfile_path}/../postcommit/${inputfile_name}</option>
+    <include>precommit/*.i</include>
   </tasks>
 </benchmark>
